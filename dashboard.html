@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShortURL Dashboard</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<!-- Leaflet MarkerCluster CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css"/>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins', sans-serif;}
+body{background:linear-gradient(135deg,#5f2c82,#49a09d); min-height:100vh; color:white;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 60px;}
+.logo img{height:45px;}
+nav a{color:white;text-decoration:none;margin-left:25px;font-size:16px;}
+nav a:hover{opacity:0.7;}
+.title{text-align:center;margin-top:40px;font-size:42px;}
+.container{width:80%;margin:40px auto;background:white;color:black;padding:30px;border-radius:12px;box-shadow:0 15px 35px rgba(0,0,0,0.25);overflow-x:auto;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th, td{padding:12px;text-align:center;border-bottom:1px solid #ddd;}
+th{background:#2575fc;color:white;}
+tr:hover{background:#f5f5f5;}
+a.short{color:#2575fc;text-decoration:none;font-weight:600;}
+.btn{padding:6px 12px;background:#2575fc;color:white;text-decoration:none;border-radius:6px;font-size:13px;}
+.btn:hover{background:#1d5ed6;}
+#map{height:500px;width:80%;margin:20px auto 50px auto;border-radius:12px;}
+footer{text-align:center;margin-top:40px;padding:20px;opacity:0.8;}
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="logo"><img src="{{ url_for('static', filename='logo.png') }}"></div>
+    <div>
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+    </div>
+</nav>
+
+<h1 class="title">URL Dashboard</h1>
+
+<div class="container">
+    <table>
+        <tr>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+            <th>Click History</th>
+        </tr>
+        {% for url in urls %}
+        <tr>
+            <td>{{ url[0] }}</td>
+            <td><a class="short" href="/{{ url[1] }}" target="_blank">{{ request.host_url }}{{ url[1] }}</a></td>
+            <td>{{ url[2] }}</td>
+            <td><a class="btn" href="/clicks/{{ url[1] }}">View Click History</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<h2 style="text-align:center; margin-top:40px; color:white;">Click Map</h2>
+<div id="map"></div>
+
+<footer>
+    <p>© 2026 ShortURL</p>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- MarkerCluster JS -->
+<script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+<script>
+var map = L.map('map').setView([20, 0], 2);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+// Marker cluster group
+var markers = L.markerClusterGroup();
+
+// Click data from Flask
+var clickData = {{ clicks_map|tojson|safe }};
+
+clickData.forEach(function(click){
+    var click_time = click[0];
+    var ip = click[1];
+    var location = click[2];
+    var lat = click[3];
+    var lon = click[4];
+
+    if(lat && lon){
+        var marker = L.marker([lat, lon])
+            .bindPopup(`<b>${location}</b><br>IP: ${ip}<br>Date: ${click_time}`);
+        markers.addLayer(marker);
+    }
+});
+
+map.addLayer(markers);
+</script>
+
+</body>
+</html>

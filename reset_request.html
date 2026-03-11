@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgot Password</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins', sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#5f2c82,#49a09d);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+.container{
+background:white;
+color:black;
+padding:40px;
+border-radius:12px;
+width:380px;
+box-shadow:0 15px 35px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2575fc;
+color:white;
+border:none;
+border-radius:6px;
+font-size:15px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d5ed6;
+}
+
+.links{
+margin-top:15px;
+}
+
+.links a{
+text-decoration:none;
+color:#2575fc;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Forgot Password</h1>
+
+<form method="POST">
+
+<input type="email" name="email" placeholder="Registered Email" required>
+
+<button type="submit">Send Reset Link</button>
+
+</form>
+
+<div class="links">
+<a href="/login">Back to Login</a>
+</div>
+
+</div>
+
+</body>
+</html>

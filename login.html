@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login - ShortURL</title>
+
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#5f2c82,#49a09d);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+}
+
+.container{
+background:white;
+color:black;
+padding:40px;
+border-radius:12px;
+width:380px;
+box-shadow:0 15px 35px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+.logo img{
+height:50px;
+margin-bottom:10px;
+}
+
+h1{
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#2575fc;
+color:white;
+border:none;
+border-radius:6px;
+font-size:15px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d5ed6;
+}
+
+
+.links{
+margin-top:15px;
+font-size:14px;
+}
+
+.links a{
+text-decoration:none;
+color:#2575fc;
+margin:0 5px;
+}
+
+.links a:hover{
+text-decoration:underline;
+}
+
+.error{
+color:red;
+margin-top:10px;
+font-weight:600;
+}
+
+.divider{
+margin:20px 0;
+display:flex;
+align-items:center;
+}
+
+.divider::before,
+.divider::after{
+content:"";
+flex:1;
+height:1px;
+background:#ddd;
+}
+
+.divider span{
+margin:0 10px;
+font-size:13px;
+color:#888;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+<img src="{{ url_for('static', filename='logo.png') }}">
+</div>
+
+<h1>Login</h1>
+
+<form method="POST">
+
+<input type="text" name="username" placeholder="Username" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+
+
+<div class="links">
+<a href="/register">Create Account</a> |
+<a href="/reset">Forgot Password?</a>
+</div>
+
+</div>
+
+</body>
+</html>
